@@ -1,16 +1,44 @@
 # An example
+## For our workshop
+
+We learned
+
++ how to enter data
++ how to aggregate
+
+1. how to plot
+2. using
+  + ggplot
+  + plot
+  
 
 
 
 First we will find out which software packages/systems we use. 
 
-------------------------------------
- var1   var2     var3     var4   ID 
------- ------ ---------- ------ ----
-Python  Java  Javascript         1  
+-------------------------
+ ID   var2   var3   var4 
+---- ------ ------ ------
+ 1     R    Python       
 
- SAS    SPSS    Excel      R     2  
-------------------------------------
+ 2    SQL   Excel        
+
+ 3    SQL   Python       
+
+ 4   Excel               
+
+ 5   Excel    R          
+
+ 6   Excel  Python       
+
+ 7   Excel               
+
+ 8    SAS    SQL   Excel 
+
+ 9   Excel  Stata        
+
+ 10   SQL    SAS   Excel 
+-------------------------
 
 
 ### So which software is the most popular?<br>
