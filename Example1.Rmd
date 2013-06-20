@@ -13,6 +13,7 @@ We learned
   
 ```{r results='hide', echo=FALSE}
 library(pander)
+load('example.rda')
 ```
 
 First we will find out which software packages/systems we use. 

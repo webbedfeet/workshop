@@ -16,29 +16,29 @@ We learned
 
 First we will find out which software packages/systems we use. 
 
--------------------------
- ID   var2   var3   var4 
----- ------ ------ ------
- 1     R    Python       
+--------------------------
+ ID   var2   var3   var4  
+---- ------ ------ -------
+ 1   Python  SQL          
 
- 2    SQL   Excel        
+ 2    SAS   Excel    SQL  
 
- 3    SQL   Python       
+ 3   Excel   SQL          
 
- 4   Excel               
+ 4     R     SAS          
 
- 5   Excel    R          
+ 5   Python  SQL   Tableau
 
- 6   Excel  Python       
+ 6   Excel                
 
- 7   Excel               
+ 7   Excel   SPSS         
 
- 8    SAS    SQL   Excel 
+ 8   Stata                
 
- 9   Excel  Stata        
+ 9   Stata   SAS    Excel 
 
- 10   SQL    SAS   Excel 
--------------------------
+ 10  Excel                
+--------------------------
 
 
 ### So which software is the most popular?<br>

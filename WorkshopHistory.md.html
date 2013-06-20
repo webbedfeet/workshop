@@ -1,0 +1,596 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Abhijit Dasgupta, PhD" />
+  <meta name="author" content="Data Community DC" />
+  <meta name="date" content="2013-06-15" />
+  <title>Introduction to R</title>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+  
+  <link rel="stylesheet" href="stylesheets/base.css" />
+  <link rel="stylesheet" href="stylesheets/skeleton.css" />
+  <link rel="stylesheet" href="stylesheets/layout.css" />
+  <link rel="stylesheet" href="stylesheets/fonts.css" />
+  <link rel="stylesheet" href="stylesheets/slimbox2.css" />
+  <link rel="stylesheet" href="stylesheets/custom.css" />
+  <link rel="stylesheet" href="stylesheets/caption.css"/>
+  
+  <link rel="shortcut icon" href="images/favicon.gif" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png" />
+  
+  <script type="text/javascript" src="javascripts/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="javascripts/tabs.js"></script>  <!--remove-->
+  <script type="text/javascript" src="javascripts/custom.js"></script>
+  <script type="text/javascript" src="javascripts/slimbox2.js"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+  <script type="text/javascript" src="javascripts/jcaption.min.js" /></script>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Introduction to R</h1>
+<h2 class="author">Abhijit Dasgupta, PhD</h2>
+<h2 class="author">Data Community DC</h2>
+<h3 class="date">June 15, 2013</h3>
+</div>
+<img src='DC2logo.png',style='height:50px'></img> <br/> <br/>
+<h1 id="starting-out-in-r">Starting out in R</h1>
+<p>We will start off by creating a blank data.frame, opening a window to directly enter data into it, do some manipulations, draw a plot, and generate a report Some lines of code below are commented (line starting with <code>#</code>) so that it doesn't run during this document. If you want to run the code on your own, just remove the <code>#</code> at the beginning of the lines.</p>
+<p>R coding is free-form, in that you can split code over lines. If you want to put two commands on the same line of text, separate them with a <code>;</code>.</p>
+<p>I saved a version of R.df using the <code>save</code> command, into a file <em>example.rda</em> You can replace it with the commented commands. Note that a R data file (an rda file) will work for all versions of R on all platforms.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;example.rda&quot;</span>)
+<span class="co"># R.df &lt;- data.frame() R.df &lt;- fix(R.df) save(R.df, file=&#39;example.rda&#39;)</span>
+R.df
+<span class="kw">str</span>(R.df)
+<span class="kw">library</span>(reshape2)
+R.df2 &lt;- <span class="kw">melt</span>(R.df, <span class="dt">id =</span> <span class="st">&quot;ID&quot;</span>)
+R.df2
+<span class="kw">str</span>(R.df2)
+<span class="kw">table</span>(R.df2$value)
+<span class="kw">barplot</span>(<span class="kw">table</span>(R.df2$value))</code></pre>
+<div class="figure">
+<img src="figure/readdata.png" alt="plot of chunk readdata" /><p class="caption">plot of chunk readdata</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
+<span class="kw">library</span>(pander)
+<span class="co"># knit(&#39;Example1.Rmd&#39;); Pandoc.convert(&#39;Example1.md&#39;, format=&#39;docx&#39;)</span></code></pre>
+<h2 id="reading-data-into-r-from-a-csv-file">Reading data into R from a CSV file</h2>
+<p>The most common type of data are text files, and often comma-separated files or csv files. R natively handles the import of data in csv format, using <code>read.csv</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">pheno &lt;- <span class="kw">read.csv</span>(<span class="st">&quot;data/pheno.csv&quot;</span>)
+pheno  <span class="co"># This prints out the data</span>
+<span class="kw">head</span>(pheno)  <span class="co"># This prints out first 6 lines</span>
+<span class="kw">tail</span>(pheno)  <span class="co"># This prints out last 6 lines</span></code></pre>
+<blockquote>
+<p><strong>Tip:</strong> you can just type an R object to see what it is or what it contains. For example, if you want to see how the function <code>read.csv</code> is coded, just type <code>read.csv</code>. You can also find out just what the arguments for a function and their default values are using the function <code>arg</code>, as below</p>
+</blockquote>
+<pre class="sourceCode r"><code class="sourceCode r">read.csv</code></pre>
+<pre><code>## function (file, header = TRUE, sep = &quot;,&quot;, quote = &quot;\&quot;&quot;, dec = &quot;.&quot;, 
+##     fill = TRUE, comment.char = &quot;&quot;, ...) 
+## read.table(file = file, header = header, sep = sep, quote = quote, 
+##     dec = dec, fill = fill, comment.char = comment.char, ...)
+## &lt;bytecode: 0x7f91c72aa150&gt;
+## &lt;environment: namespace:utils&gt;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(read.csv)</code></pre>
+<pre><code>## function (file, header = TRUE, sep = &quot;,&quot;, quote = &quot;\&quot;&quot;, dec = &quot;.&quot;, 
+##     fill = TRUE, comment.char = &quot;&quot;, ...) 
+## NULL</code></pre>
+<blockquote>
+<p>We see that <code>read.csv</code> is build on the function <code>read.table</code>. To see more about <code>read.table</code>, you can access its documentation by typing <code>?read.table</code> or <code>help(read.table)</code></p>
+</blockquote>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">help</span>(read.table)</code></pre>
+<h2 id="working-with-data-sets">Working with data sets</h2>
+<h3 id="figuring-out-whats-in-a-data-set">Figuring out what's in a data set</h3>
+<p>R has two powerful functions which give you a quick feel about a data set. The two major pieces of information you need are</p>
+<ul>
+<li>What kinds of data are part of the data set (use <code>str</code>)</li>
+<li>Some summary of the data (use <code>summary</code>)</li>
+</ul>
+<p><code>str(pheno)</code> tells us that we have a <code>data.frame</code> object with 1000 observations of 6 variables. Each variable has a type -- in this case all are integer variables (<code>int</code>) and <code>sex</code> is a <code>factor</code> variable. I'll describe <code>factor</code> variables in a bit.</p>
+<p><code>summary(pheno)</code> gives numerical summaries for <code>int</code> variables (as it would for <code>numeric</code> variables) and frequency tabulations for <code>factor</code> variables. If you have a <code>character</code> variable (denoted <code>chr</code> in the output of <code>str</code>), it would merely say that you have a character variable of 1000 observations</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(pheno)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1000 obs. of  6 variables:
+##  $ X  : int  486 79 511 304 933 47 584 585 589 659 ...
+##  $ sex: Factor w/ 2 levels &quot;FEMALE&quot;,&quot;MALE&quot;: 2 1 1 2 2 1 1 1 1 1 ...
+##  $ sbp: int  132 122 173 151 148 159 149 145 158 153 ...
+##  $ dbp: int  76 60 63 81 89 79 90 100 80 68 ...
+##  $ bmi: int  16 17 17 18 18 19 19 19 19 19 ...
+##  $ id : int  45516 21869 24512 32125 21503 30728 49088 43523 41446 28797 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pheno)</code></pre>
+<pre><code>##        X            sex           sbp           dbp             bmi      
+##  Min.   :   1   FEMALE:468   Min.   : 87   Min.   : 47.0   Min.   :16.0  
+##  1st Qu.: 251   MALE  :532   1st Qu.:129   1st Qu.: 76.0   1st Qu.:26.0  
+##  Median : 500                Median :140   Median : 82.0   Median :29.0  
+##  Mean   : 500                Mean   :141   Mean   : 82.6   Mean   :30.3  
+##  3rd Qu.: 750                3rd Qu.:152   3rd Qu.: 90.0   3rd Qu.:33.0  
+##  Max.   :1000                Max.   :202   Max.   :117.0   Max.   :51.0  
+##                                                            NA&#39;s   :1     
+##        id       
+##  Min.   :10100  
+##  1st Qu.:20168  
+##  Median :28914  
+##  Mean   :29713  
+##  3rd Qu.:39570  
+##  Max.   :49911  
+## </code></pre>
+<h3 id="a-note-on-data.frame">A note on <code>data.frame</code></h3>
+<p>The <code>data.frame</code> looks like a matrix, but it really isn't. This is one of the pitfalls and quirks of R. We can see this by</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.data.frame</span>(pheno)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.matrix</span>(pheno)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>The <code>data.frame</code> object is really another kind of R object, a <code>list</code>. We will see later how this is useful, since R has very powerful list manipulation functions. Still, some matrix operations are allowed for <code>data.frame</code> objects. For example, you can extract rows and columns and elements just like a matrix, using <code>pheno[1,]</code> (1st row), <code>pheno[,3]</code> (3rd column) or <code>pheno[1,2]</code> (the (1,2) element).</p>
+<p>You can extract variables (stored apparently in columns) either by the above matrix notation, or by variable name. For example, to just extract the <code>sex</code> variable, you can use <code>pheno$sex</code> or <code>pheno[,'sex']</code>. The <code>$</code> notation is useful to extract single variables, but the matrix-like notation is useful to extract multiple variables by name: <code>pheno[,c('sex','sbp','dbp','bmi')]. As a side note,</code>c()` is a function called &quot;concatenate&quot;, which creates vectors.</p>
+<h3 id="merging-data-sets">Merging data sets</h3>
+<p>The study I took the data from has two files, geno and pheno, which collected gene data and clinical data respectively from 1000 subjects. We now read in the gene data, but we need to match up the two data sets so that the rows correspond. The simplest way to do this is to sort the rows of the data frame by the <code>id</code> variable, so both have the same order. The data set <code>pheno</code> is already sorted. We need to do this for <code>pheno</code>. We will use the <code>order</code> function on the <code>id</code> variable to figure out its sort order. Basically, the rule is that, to sort a vector <code>x</code>, you can do <code>sort(x)</code> or <code>x[order(x)]</code>. Here what we need is the correct re-ordering, not just the sorted values. So <code>order(x)</code> is what's needed to re-order the rows.</p>
+<blockquote>
+<p><strong>A general practice:</strong> Never change data (be it a vector or a data.frame) in place. Always copy it to differently-named object and change that. That way, if you goof up, you're not having to re-generate everything. So, I saved the re-ordered <code>pheno</code> to <code>pheno2</code>. This keeps <code>pheno</code> unchanged.</p>
+</blockquote>
+<pre class="sourceCode r"><code class="sourceCode r">geno &lt;- <span class="kw">read.table</span>(<span class="st">&quot;data/geno.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>, <span class="dt">header =</span> T)
+<span class="kw">head</span>(geno)</code></pre>
+<pre><code>##   snp1 snp2 snp3 snp4 snp5 snp6 snp7 snp8 snp9 snp10 snp11    id
+## 1   CC   TT   TT   TT   CC   AG   TT   CC   TT    CT    TT 10100
+## 2   TT   TT   CC   CC   CC   AA   AT   CT   CT    CC    TT 10110
+## 3   CT   AT   TC   TT &lt;NA&gt;   AG   AT   CC   TT    CT    TT 10177
+## 4   CT   TT   CC   CC   CC   AA   AT   CC   TT    CT    CT 10180
+## 5   TT   TT   CC   CC   CC   AA   TT   CC   TT    CT    TT 10244
+## 6   CT   AT &lt;NA&gt;   CT   CT   AG   AT   CT   CT    CC    CT 10245</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(pheno)</code></pre>
+<pre><code>##     X    sex sbp dbp bmi    id
+## 1 486   MALE 132  76  16 45516
+## 2  79 FEMALE 122  60  17 21869
+## 3 511 FEMALE 173  63  17 24512
+## 4 304   MALE 151  81  18 32125
+## 5 933   MALE 148  89  18 21503
+## 6  47 FEMALE 159  79  19 30728</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">o = <span class="kw">order</span>(pheno$id)
+<span class="co"># pheno$id[o]</span>
+pheno2 = pheno[o, ]
+<span class="co"># pheno2 &lt;- pheno[order(pheno$id),]</span>
+<span class="kw">head</span>(pheno2)</code></pre>
+<pre><code>##       X    sex sbp dbp bmi    id
+## 193 479   MALE 152  88  25 10100
+## 621 711 FEMALE 187  88  31 10110
+## 578 987   MALE 135  93  30 10177
+## 80  110 FEMALE 148  92  23 10180
+## 271 712 FEMALE 133  69  26 10244
+## 33  472 FEMALE 112  47  21 10245</code></pre>
+<p>A better way to match the ordering of two data sets based on a common variable is to use the function <code>match</code></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(match)</code></pre>
+<pre><code>## function (x, table, nomatch = NA_integer_, incomparables = NULL) 
+## NULL</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">ind &lt;- <span class="kw">match</span>(geno$id, pheno$id)
+pheno3 &lt;- pheno[ind, ]</code></pre>
+<p>You can check for yourself whether <code>pheno2</code> and <code>pheno3</code> are the same.</p>
+<p>You can also merge the two datasets into a single data set based on a common variable, using the function <code>merge</code>. This does not require the common variable (in this case, <code>id</code>) to be sorted, unlike in SAS.</p>
+<pre class="sourceCode r"><code class="sourceCode r">combined.data &lt;- <span class="kw">merge</span>(pheno, geno, <span class="dt">by =</span> <span class="st">&quot;id&quot;</span>)
+<span class="kw">head</span>(combined.data)</code></pre>
+<pre><code>##      id   X    sex sbp dbp bmi snp1 snp2 snp3 snp4 snp5 snp6 snp7 snp8
+## 1 10100 479   MALE 152  88  25   CC   TT   TT   TT   CC   AG   TT   CC
+## 2 10110 711 FEMALE 187  88  31   TT   TT   CC   CC   CC   AA   AT   CT
+## 3 10177 987   MALE 135  93  30   CT   AT   TC   TT &lt;NA&gt;   AG   AT   CC
+## 4 10180 110 FEMALE 148  92  23   CT   TT   CC   CC   CC   AA   AT   CC
+## 5 10244 712 FEMALE 133  69  26   TT   TT   CC   CC   CC   AA   TT   CC
+## 6 10245 472 FEMALE 112  47  21   CT   AT &lt;NA&gt;   CT   CT   AG   AT   CT
+##   snp9 snp10 snp11
+## 1   TT    CT    TT
+## 2   CT    CC    TT
+## 3   TT    CT    TT
+## 4   TT    CT    CT
+## 5   TT    CT    TT
+## 6   CT    CC    CT</code></pre>
+<h3 id="factor-variables">Factor variables</h3>
+<p>Factor variables are very useful, but can be quirky. Factors look like character variables, but are really stored as numeric variables. They are meant to store categorical variables rather than strings.</p>
+<pre class="sourceCode r"><code class="sourceCode r">s2 = <span class="kw">as.character</span>(pheno$sex)
+<span class="kw">str</span>(s2)</code></pre>
+<pre><code>##  chr [1:1000] &quot;MALE&quot; &quot;FEMALE&quot; &quot;FEMALE&quot; &quot;MALE&quot; &quot;MALE&quot; ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(s2)</code></pre>
+<pre><code>##    Length     Class      Mode 
+##      1000 character character</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">as.numeric</span>(pheno$sex))</code></pre>
+<pre><code>## [1] 2 1 1 2 2 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">as.numeric</span>(s2))</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre><code>## [1] NA NA NA NA NA NA</code></pre>
+<p>When we read in data sets, R, by default, converts any string variable to a factor. This is often not what we want. For example, an identifier variable needs to remain a character, not a factor. Most of us suggest making sure that strings are imported as characters, not factors. There is an option <code>stringsAsFactors</code> which can be set globally using <code>options(stringsAsFactors=FALSE)</code>. You can also set it on the fly when you import data</p>
+<pre class="sourceCode r"><code class="sourceCode r">pheno &lt;- <span class="kw">read.csv</span>(<span class="st">&quot;data/pheno.csv&quot;</span>, <span class="dt">stringsAsFactors =</span> F)</code></pre>
+<p>You can also pre-specify what the types of variables are in each column you are importing, using the option <code>colClasses</code> (note the camel-case). This is much faster if you are importing large data sets</p>
+<pre class="sourceCode r"><code class="sourceCode r">pheno &lt;- <span class="kw">read.csv</span>(<span class="st">&quot;data/pheno.csv&quot;</span>, <span class="dt">colClasses =</span> <span class="kw">c</span>(<span class="st">&quot;integer&quot;</span>, <span class="st">&quot;factor&quot;</span>, <span class="st">&quot;integer&quot;</span>, 
+    <span class="st">&quot;integer&quot;</span>, <span class="st">&quot;integer&quot;</span>, <span class="st">&quot;integer&quot;</span>))</code></pre>
+<h2 id="reading-from-databases">Reading from databases</h2>
+<p>R has packages to import data from most standard relational databases. The generic package is <code>RODBC</code> which connects R to ODBC-compliant databases. Popular databases also have dedicated packages, including</p>
+<ul>
+<li>MySQL (<code>RMySQL</code>),</li>
+<li>Postgresql (<code>RPgSQL</code>),</li>
+<li>SQLite (<code>RSQLite</code>),</li>
+<li>MonetDB (<code>MonetDB.R</code>)</li>
+</ul>
+<p>More recently, there are packages to import from MongoDB and CouchDB, two popular NoSQL databases.</p>
+<p>I'm demonstrating using RSQLite, since it installs the sqlite database automatically. The other package you need is <code>sqldb</code>, which allows you to manipulate R data frames and database objects using SQL commands. If you are coming from a SQL background, this is a life saver.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RSQLite)
+sqlite &lt;- <span class="kw">dbDriver</span>(<span class="st">&quot;SQLite&quot;</span>)
+exampledb &lt;- <span class="kw">dbConnect</span>(sqlite, <span class="st">&quot;data/mydb.sqlite&quot;</span>)
+<span class="kw">dbListTables</span>(exampledb)</code></pre>
+<pre><code>## [1] &quot;genotype&quot;  &quot;phenotype&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sqldf)
+<span class="kw">sqldf</span>(<span class="st">&quot;select * from phenotype limit 5&quot;</span>, <span class="dt">dbname =</span> <span class="st">&quot;data/mydb.sqlite&quot;</span>)</code></pre>
+<pre><code>##     X    sex sbp dbp bmi    id
+## 1 486   MALE 132  76  16 45516
+## 2  79 FEMALE 122  60  17 21869
+## 3 511 FEMALE 173  63  17 24512
+## 4 304   MALE 151  81  18 32125
+## 5 933   MALE 148  89  18 21503</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqldf</span>(<span class="st">&quot;select * from pheno limit 5&quot;</span>)  <span class="co"># use the data.frame pheno</span></code></pre>
+<pre><code>##     X    sex sbp dbp bmi    id
+## 1 486   MALE 132  76  16 45516
+## 2  79 FEMALE 122  60  17 21869
+## 3 511 FEMALE 173  63  17 24512
+## 4 304   MALE 151  81  18 32125
+## 5 933   MALE 148  89  18 21503</code></pre>
+<h2 id="subsetting">Subsetting</h2>
+<p>We will use another data set that comes with R to demonstrate some other functionalities. You can see all the data sets that are loaded with R and other R packages you might have installed by typing <code>data()</code>. We will use the <code>mtcars</code> data set, which is a data set of car road tests published by Motor Trend magazine in 1974.</p>
+<p>First, we will look at subsetting data by values of some variable. Note, if you wanted to subset particular rows, say the first 10 rows, you could just use matrix notation and do <code>mtcars[1:10,]</code>.</p>
+<blockquote>
+<blockquote>
+<p>The notation <code>1:10</code> denotes the sequence 1,2,3,4,5,6,7,8,9,10, stored in a numeric vector. This is similar to the function <code>range</code> in Python.</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>Note that R starts counting at 1, so the first element of a vector <code>x</code> is <code>x[1]</code>. This is unlike Python or C, which start counting at 0. This is because of R's close history with Fortran, which was a column-dominant language counting from 1.</p>
+</blockquote>
+</blockquote>
+<p>We start by extracting the subset of data where number of cylinders is 6. Note that we are using <code>==</code> and not <code>=</code>. You can also put multiple conditions in your subset conditions, either using <code>&amp;</code> (and) or <code>|</code> (or)</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mtcars)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(mtcars)</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(mtcars, cyl == <span class="dv">6</span>)</code></pre>
+<pre><code>##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Valiant        18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Merc 280       19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C      17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(mtcars, cyl == <span class="dv">6</span> &amp; mpg &lt; <span class="dv">20</span>)</code></pre>
+<pre><code>##               mpg cyl  disp  hp drat   wt  qsec vs am gear carb
+## Valiant      18.1   6 225.0 105 2.76 3.46 20.22  1  0    3    1
+## Merc 280     19.2   6 167.6 123 3.92 3.44 18.30  1  0    4    4
+## Merc 280C    17.8   6 167.6 123 3.92 3.44 18.90  1  0    4    4
+## Ferrari Dino 19.7   6 145.0 175 3.62 2.77 15.50  0  1    5    6</code></pre>
+<h2 id="transformation-and-creating-new-variables">Transformation and creating new variables</h2>
+<p>The non-destructive way of creating new variables in a data set is the function <code>transform</code>. First we want to say that if a car gets less than 20 mpg, it is a gas guzzler. R has a convenient <code>ifelse</code> function to do this (much like th <code>?</code> function in Python/C). Ideally you want to make this new variable a factor.</p>
+<p>You can create multiple variables in one command using <code>transform</code>. For example, I also convert mpg to kmpg.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ifelse</span>(mtcars$mpg &lt; <span class="dv">20</span>, <span class="st">&quot;gas.guzzler&quot;</span>, <span class="st">&quot;Econ&quot;</span>)</code></pre>
+<pre><code>##  [1] &quot;Econ&quot;        &quot;Econ&quot;        &quot;Econ&quot;        &quot;Econ&quot;        &quot;gas.guzzler&quot;
+##  [6] &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;Econ&quot;        &quot;Econ&quot;        &quot;gas.guzzler&quot;
+## [11] &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;gas.guzzler&quot;
+## [16] &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;Econ&quot;        &quot;Econ&quot;        &quot;Econ&quot;       
+## [21] &quot;Econ&quot;        &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;gas.guzzler&quot; &quot;gas.guzzler&quot;
+## [26] &quot;Econ&quot;        &quot;Econ&quot;        &quot;Econ&quot;        &quot;gas.guzzler&quot; &quot;gas.guzzler&quot;
+## [31] &quot;gas.guzzler&quot; &quot;Econ&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">blah &lt;- <span class="kw">transform</span>(mtcars, <span class="dt">gas =</span> <span class="kw">ifelse</span>(mpg &lt; <span class="dv">20</span>, <span class="st">&quot;gas.guzzler&quot;</span>, <span class="st">&quot;econ&quot;</span>), <span class="dt">kmpg =</span> <span class="fl">1.6</span> * 
+    mpg)
+<span class="kw">str</span>(blah)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  13 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+##  $ gas : Factor w/ 2 levels &quot;econ&quot;,&quot;gas.guzzler&quot;: 1 1 1 1 2 2 2 1 1 2 ...
+##  $ kmpg: num  33.6 33.6 36.5 34.2 29.9 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">blah &lt;- <span class="kw">transform</span>(mtcars, <span class="dt">gas =</span> <span class="kw">ifelse</span>(mpg &lt; <span class="dv">20</span>, <span class="st">&quot;gas.guzzler&quot;</span>, <span class="st">&quot;econ&quot;</span>), <span class="dt">kmpg =</span> <span class="fl">1.6</span> * 
+    mpg, <span class="dt">score =</span> <span class="dv">3</span> * cyl + <span class="fl">0.1</span> * wt - <span class="fl">0.01</span> * mpg)
+<span class="kw">str</span>(blah)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  14 variables:
+##  $ mpg  : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl  : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp : num  160 160 108 258 360 ...
+##  $ hp   : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat : num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt   : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec : num  16.5 17 18.6 19.4 17 ...
+##  $ vs   : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am   : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear : num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb : num  4 4 1 1 2 1 4 2 2 4 ...
+##  $ gas  : Factor w/ 2 levels &quot;econ&quot;,&quot;gas.guzzler&quot;: 1 1 1 1 2 2 2 1 1 2 ...
+##  $ kmpg : num  33.6 33.6 36.5 34.2 29.9 ...
+##  $ score: num  18.1 18.1 12 18.1 24.2 ...</code></pre>
+<p>Note that the original <code>mtcars</code> remains unchanged</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mtcars)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<h2 id="missing-data">Missing data</h2>
+<p>R codes missing data as <code>NA</code>, and provides the function <code>is.na</code> to find missing values. Many of R's functions give a missing value or <code>NA</code> if one of the components in the computation is missing. This behavior can be suppressed within the functions which accept it by the option <code>na.rm=TRUE</code>. The <code>summary</code> function we saw before already does this, and tells you how many values are missing for each variable in the data set</p>
+<pre class="sourceCode r"><code class="sourceCode r">blah$mpg[<span class="dv">3</span>] &lt;- <span class="ot">NA</span>
+<span class="kw">head</span>(blah)</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710          NA   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+##                           gas  kmpg score
+## Mazda RX4                econ 33.60 18.05
+## Mazda RX4 Wag            econ 33.60 18.08
+## Datsun 710               econ 36.48 12.00
+## Hornet 4 Drive           econ 34.24 18.11
+## Hornet Sportabout gas.guzzler 29.92 24.16
+## Valiant           gas.guzzler 28.96 18.16</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(blah$mpg)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(blah$mpg, <span class="dt">na.rm =</span> T)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<h2 id="applying-a-function-over-components-of-a-data-set">'Apply'ing a function over components of a data set</h2>
+<p>R provides a family of functions, all ending in <code>apply</code>, which are meant to evaluate a function over different aspects of a data set. The function <code>apply</code> works on matrices.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(apply)
+<span class="co"># X = matrix(rnorm(100),ncol=10) # rnorm generates normal random numbers</span>
+<span class="co"># apply(X, 2, mean)</span></code></pre>
+<p><code>lapply</code> does the same for components of a <code>list</code>. Recall I said that a <code>data.frame</code> object is really a <code>list</code>. So the following works:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(lapply)
+<span class="co"># lapply(pheno, mean, na.rm=T)</span></code></pre>
+<h2 id="aggregation">Aggregation</h2>
+<p>R provides many ways to aggregate data, including the functions <code>by</code> and <code>aggregate</code>. The most powerful group of functions are from the package <code>plyr</code>. These functions are all of the form <code>(x)(y)ply</code>, where <code>(x)</code> and <code>(y)</code> can be any of <em>d</em> (data.frame),<em>a</em> (array), and <em>l</em> (list). <code>(x)</code> denotes the type of data that is input, and <code>(y)</code> denotes the type of data being output. These functions implement what Wickham calls the &quot;split-apply-combine&quot; paradigm, i.e., you split the data by some variable (usually of type <code>factor</code>), apply a function to the split pieces, and put the results of the functions back together. The documentation is rather unfortunate for these functions, so I'll demonstrate by example.</p>
+<p>We will first look at the average mpg of the cars in <code>mtcars</code> by number of cylinders. This can be done by splitting the data set by <code>cyl</code>, passing the split data sets through the function <code>summarise</code>, and then putting the results back together into a data frame. For more information on the <code>summarise</code> function, look at its documentation. There are two ways of denoting the splitting variable. I prefer <code>~cyl</code>, since it is similar to the formula interface for modeling in R that I am familiar with, and that you will learn later. You can also split on two or more factors quite easily. With <code>summarise</code>, you can also compute more than one measure</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(plyr)
+mtcars &lt;- <span class="kw">transform</span>(mtcars, <span class="dt">cyl =</span> <span class="kw">as.factor</span>(cyl), <span class="dt">gear =</span> <span class="kw">as.factor</span>(gear))  <span class="co">#this creates a local copy</span>
+avg.by.cyl &lt;- <span class="kw">ddply</span>(mtcars, ~cyl, summarise, <span class="dt">mpg =</span> <span class="kw">mean</span>(mpg, <span class="dt">na.rm =</span> T))
+<span class="co"># avg.by.cyl &lt;- ddply(mtcars, .(cyl), summarise, mpg = mean(mpg, na.rm=T))</span>
+avg.by.cyl</code></pre>
+<pre><code>##   cyl   mpg
+## 1   4 26.66
+## 2   6 19.74
+## 3   8 15.10</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">avg.by.cyl.gear &lt;- <span class="kw">ddply</span>(mtcars, ~cyl + gear, summarise, <span class="dt">mean.mpg =</span> <span class="kw">mean</span>(mpg, 
+    <span class="dt">na.rm =</span> T), <span class="dt">median.mpg =</span> <span class="kw">median</span>(mpg, <span class="dt">na.rm =</span> T))
+avg.by.cyl.gear</code></pre>
+<pre><code>##   cyl gear mean.mpg median.mpg
+## 1   4    3    21.50      21.50
+## 2   4    4    26.93      25.85
+## 3   4    5    28.20      28.20
+## 4   6    3    19.75      19.75
+## 5   6    4    19.75      20.10
+## 6   6    5    19.70      19.70
+## 7   8    3    15.05      15.20
+## 8   8    5    15.40      15.40</code></pre>
+<p>If you want to just split the data set up by a variable, that is very easy as well</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dlply</span>(mtcars, ~cyl)</code></pre>
+<h1 id="basic-plotting">Basic plotting</h1>
+<p>R provides several plotting frameworks. The basic one is known as base graphics, and one of the more popular frameworks is in the package <a href="http://docs.ggplot2.org"><code>ggplot2</code></a>. To make a few quick and dirty plots....</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg ~ disp, <span class="dt">data =</span> mtcars)</code></pre>
+<div class="figure">
+<img src="figure/plots11.png" alt="plot of chunk plots1" /><p class="caption">plot of chunk plots1</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg ~ disp, <span class="dt">data =</span> mtcars, <span class="dt">xlab =</span> <span class="st">&quot;Displacement&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Miles per gallon&quot;</span>, 
+    <span class="dt">main =</span> <span class="st">&quot;Fuel effiency by engine size&quot;</span>)  <span class="co"># adding labels</span></code></pre>
+<div class="figure">
+<img src="figure/plots12.png" alt="plot of chunk plots1" /><p class="caption">plot of chunk plots1</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mpg ~ cyl, <span class="dt">data =</span> mtcars)</code></pre>
+<div class="figure">
+<img src="figure/plots13.png" alt="plot of chunk plots1" /><p class="caption">plot of chunk plots1</p>
+</div>
+<p>You can make prettier plots with better defaults using <code>ggplot2</code> which is based on the Grammar of Graphics. The idea is, like a painter, to layer different components of the plot on top of each other. The syntax is quirky again, but once you learn it, it is really very powerful.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">print</span>(<span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> disp, <span class="dt">y =</span> mpg)) + <span class="kw">geom_point</span>())</code></pre>
+<div class="figure">
+<img src="figure/ggplot1.png" alt="plot of chunk ggplot" /><p class="caption">plot of chunk ggplot</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> disp, <span class="dt">y =</span> mpg)) + <span class="kw">geom_point</span>() + <span class="kw">geom_smooth</span>() + 
+    <span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Displacement&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Miles per gallon&quot;</span>) + <span class="kw">ggtitle</span>(<span class="st">&quot;Fuel efficiency by engine size&quot;</span>))</code></pre>
+<div class="figure">
+<img src="figure/ggplot2.png" alt="plot of chunk ggplot" /><p class="caption">plot of chunk ggplot</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x =</span> disp, <span class="dt">y =</span> mpg)) + <span class="kw">geom_point</span>() + <span class="kw">geom_smooth</span>() + 
+    <span class="kw">facet_wrap</span>(~cyl, <span class="dt">ncol =</span> <span class="dv">1</span>) + <span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Displacement&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Miles per gallon&quot;</span>))</code></pre>
+<div class="figure">
+<img src="figure/ggplot3.png" alt="plot of chunk ggplot" /><p class="caption">plot of chunk ggplot</p>
+</div>
+<p>If you want to look at several variables and their inter-relationships, the functions <code>pairs</code> (base graphics) and <code>plotmatrix</code> (ggplot2) work</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(pheno[, <span class="kw">c</span>(<span class="st">&quot;sbp&quot;</span>, <span class="st">&quot;dbp&quot;</span>, <span class="st">&quot;bmi&quot;</span>)])</code></pre>
+<div class="figure">
+<img src="figure/pm1.png" alt="plot of chunk pm" /><p class="caption">plot of chunk pm</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">plotmatrix</span>(pheno[, <span class="kw">c</span>(<span class="st">&quot;sbp&quot;</span>, <span class="st">&quot;dbp&quot;</span>, <span class="st">&quot;bmi&quot;</span>)]))</code></pre>
+<pre><code>## This function is deprecated. For a replacement, see the ggpairs function
+## in the GGally package. (Deprecated; last used in version 0.9.2)</code></pre>
+<div class="figure">
+<img src="figure/pm2.png" alt="plot of chunk pm" /><p class="caption">plot of chunk pm</p>
+</div>
+<h3 id="javascript-based-interactive-charts">Javascript-based interactive charts</h3>
+<p>I believe the future is in web-based content-rich interactive charts. The package <code>rCharts</code> provides an interface from R to several Javascript graphing libraries. Running the following code will open up your web browser to display the charts. These charts can be integrated into HTML documents, but that's another day. See the <a href="http://ramnathv.github.io/rCharts/">rCharts</a> webpage for more details.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rCharts)
+r1 &lt;- <span class="kw">rPlot</span>(mpg ~ wt | cyl, <span class="dt">data =</span> mtcars, <span class="dt">type =</span> <span class="st">&quot;point&quot;</span>)
+r1</code></pre>
+<h1 id="some-basic-modeling">Some basic modeling</h1>
+<p>Fitting a linear regression model to two variables is a pretty basic task. R provies an intuitive formula interface for all its modeling functions, which reads just like an equation. The linear regression model is fit using the function <code>lm</code> (linear model). Other modeling functions include <code>glm</code> (generalized linear models), <code>lrm</code> (logistic regression, in package rms), <code>coxph</code> (Cox regression, in package survival), and several machine learning methods in the package <code>caret</code>. There are many more.</p>
+<blockquote>
+<blockquote>
+<p><strong>Huge tip:</strong> Go to the <a href="http://cran.rstudio.com/web/views/">Task Views</a> page on CRAN to find packages addressing different topics in analytics</p>
+</blockquote>
+</blockquote>
+<pre class="sourceCode r"><code class="sourceCode r">model1 &lt;- <span class="kw">lm</span>(mpg ~ disp, <span class="dt">data =</span> mtcars)
+model1</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ disp, data = mtcars)
+## 
+## Coefficients:
+## (Intercept)         disp  
+##     29.5999      -0.0412</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ disp, data = mtcars)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -4.892 -2.202 -0.963  1.627  7.231 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 29.59985    1.22972   24.07  &lt; 2e-16 ***
+## disp        -0.04122    0.00471   -8.75  9.4e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.25 on 30 degrees of freedom
+## Multiple R-squared:  0.718,  Adjusted R-squared:  0.709 
+## F-statistic: 76.5 on 1 and 30 DF,  p-value: 9.38e-10</code></pre>
+<p>You can now export components of the results for use in your report. The most useful tools (in Windows) is the package <code>R2wd</code> which will take the result of the model, format it and put it into your open Word document.</p>
+<p>My preferred way now is using <a href="http://daringfireball.net/projects/markdown/">markdown</a>, <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> and the R package <a href="http://yihui.name/knitr/">knitr</a>, as demonstrated <a href="http://yihui.name/knitr/demo/pandoc/">here</a>. <code>knitr</code> is a very powerful tool which is relatively easy to use (I'm using it right now), so is worth a look. This file uses these tools, and the process of converting it to Word and HTML are described at the end of this document. The results of the model above is formatted below:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(pander)
+<span class="kw">pander</span>(model1)</code></pre>
+<table>
+<caption>Fitting linear model: mpg ~ disp</caption>
+<col width="25%" />
+<col width="15%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>(Intercept)</strong></td>
+<td align="center">29.6</td>
+<td align="center">1.23</td>
+<td align="center">24.07</td>
+<td align="center">3.577e-21</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>disp</strong></td>
+<td align="center">-0.04122</td>
+<td align="center">0.004712</td>
+<td align="center">-8.747</td>
+<td align="center">9.38e-10</td>
+</tr>
+</tbody>
+</table>
+<p>R treats graphs as printable objects, and so provides several &quot;printers&quot; to convert graphs to PDF, PNG, JPG, etc.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dev.off</span>()
+<span class="kw">pdf</span>(<span class="dt">file =</span> <span class="st">&quot;graph.pdf&quot;</span>)
+<span class="co"># png(file=&#39;graph.png&#39;) jpeg(file=&#39;graph.jpg&#39;)</span>
+<span class="kw">plot</span>(mpg ~ disp, <span class="dt">data =</span> mtcars, <span class="dt">xlab =</span> <span class="st">&quot;Displacement&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Miles per gallon&quot;</span>)
+<span class="kw">dev.off</span>()</code></pre>
+<h3 id="finally">Finally</h3>
+<p>You should be writing R in a script file and passing it to R, rather than writing directly in the R console. However, R automatically saves all your commands in a history file, so you can save that directly</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">savehistory</span>(<span class="st">&quot;~/Downloads/workshop-master/WorkshopHistory.R&quot;</span>)</code></pre>
+<h1 id="resources">Resources</h1>
+<p>No endorsement is implied in this list. There are many many R resources out there. This is the tip of the iceberg.</p>
+<h2 id="learning-r">Learning R</h2>
+<ol style="list-style-type: decimal">
+<li><a href="http://learnr.workpress.com">Learning R</a></li>
+<li><a href="http://www.ats.ucla.edu/stat/r/">UCLA IDRE</a></li>
+<li><a href="http://www.r-bloggers.com">R Bloggers</a></li>
+<li><a href="http://cran.r-project.org/web/views">CRAN Task Views</a></li>
+<li><a href="http://www.codeschool.com/courses/try-r">Code school</a></li>
+<li><a href="http://www.inside-r.org/howto/how-learn-r">How to learn R</a></li>
+<li><a href="http://www.xmind.net/m/LKF2/">A R mindmap</a></li>
+<li><a href="http://www.statistics.com">statistics.com</a></li>
+</ol>
+<h2 id="coming-from-another-software">Coming from another software</h2>
+<ol style="list-style-type: decimal">
+<li><a href="http://sas-and-r.blogspot.com">SAS and R</a></li>
+<li><a href="http://r4stats.com/examples/">r4stats</a></li>
+<li><a href="http://rcom.univie.ac.at">RExcel</a></li>
+</ol>
+<h2 id="locally-shameless-plug">Locally (shameless plug)</h2>
+<ol style="list-style-type: decimal">
+<li><a href="http://datacommunitydc.org/blog/stats-prog-dc/">Statistical Programming DC</a></li>
+<li><a href="http://datacommunitydc.org/blog/data-science-dc/">Data Science DC</a></li>
+<li><a href="http://datacommunitydc.org/blog/data-visualization-dc/">Data Visualization DC</a></li>
+</ol>
+<h1 id="acknowledgements">Acknowledgements</h1>
+<p>I would like to thank Tony Ojeda for organizing the workshop, the participants for their questions and interaction, and authors of the R packages I use.</p>
+<p>This document is written within RStudio using the R Notebook facility. The source <em>WorkshopHistory.R</em> is formatted in accordance with requirements of the <code>spin</code> function of the <code>knitr</code> package, which converted this to Rmarkdown (<em>WorkshopHistory.Rmd</em>) and Markdown (<em>WorkshopHistory.md</em>). This was then converted to HTML (<em>WorkshopHistory.md.html</em>) and Word (<em>WorkshopHistory.md.docx</em>) using <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> and the function <code>Pandoc.convert</code> from the R package <em>pander</em>. The code has been extracted into a separate file <em>code.R</em>. This document contains both the text and the R code and can be reproduced locally by the commands</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
+<span class="kw">library</span>(pander)
+<span class="kw">spin</span>(<span class="st">&quot;WorkshopHistory.R&quot;</span>)
+<span class="kw">Pandoc.convert</span>(<span class="st">&quot;WorkshopHistory.md&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;docx&quot;</span>)
+<span class="kw">Pandoc.convert</span>(<span class="st">&quot;WorkshopHistory.md&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;html&quot;</span>)</code></pre>
+<p>The R code can be extracted following the previous commands, using the commands</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
+<span class="kw">purl</span>(<span class="st">&quot;WorkshopHistory.Rmd&quot;</span>, <span class="dt">output =</span> <span class="st">&quot;code.R&quot;</span>)</code></pre>
+<p>I hope you have fun exploring R and the many tools it provides for data analytics.</p>
+<hr />
+<p>This report was generated with <a href="http://www.r-project.org/">R</a> (3.0.1) and <a href="https://github.com/rapporter/pander">pander</a> (0.3.7) on x86_64-apple-darwin10.8.0 platform.</p>
+<p align="center">
+  Design: <a href="http://rapport-package.info/"><i>rapport</i> Development Team</a> &copy; 2012 | Backend: <a href="https://github.com/rapporter/pander">pander</a> | License: <a href="http://www.gnu.org/licenses/agpl.html" target="_blank">AGPL3</a> | Styled with <a href="http://www.getskeleton.com/" target="_blank">skeleton</a>
+</p>
+</body>
+</html>
